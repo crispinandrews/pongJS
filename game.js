@@ -38,13 +38,34 @@ window.onload = function(){
   });
 }
 
+function ballReset(){
+  ballX = canvas.width/2;
+  ballY = canvas.height/2;
+  ballSpeedX = -ballSpeedX;
+
+}
+
 function move(){
   ballX = ballX + ballSpeedX;
   ballY = ballY + ballSpeedY;
 
+  // left side collision
   if(ballX < 0) {
-    ballSpeedX = -ballSpeedX;
+    if(ballY > leftPaddleY && ballY < leftPaddleY+PADDLE_HEIGHT){
+      ballSpeedX = -ballSpeedX;
+    } else{
+      ballReset();
+    }
   }
+  // right side collision
+  if(ballX > (canvas.width-PADDLE_WIDTH)) {
+    if(ballY > rightPaddleY && ballY < rightPaddleY+PADDLE_HEIGHT){
+      ballSpeedX = -ballSpeedX;
+    } else{
+      ballReset();
+    }
+  }
+
   if(ballX > canvas.width) {
     ballSpeedX = -ballSpeedX;
   }
@@ -61,9 +82,9 @@ function drawCanvas(){
   //create black canvas
   colourRect(0,0,canvas.width,canvas.height,'black');
 
-  //draw paddle
-  colourRect(10,leftPaddleY,PADDLE_WIDTH,PADDLE_HEIGHT,'white');
-  colourRect((canvas.width-(PADDLE_WIDTH+10)),rightPaddleY,PADDLE_WIDTH,PADDLE_HEIGHT,'white');
+  //draw paddles
+  colourRect(0,leftPaddleY,PADDLE_WIDTH,PADDLE_HEIGHT,'white');
+  colourRect((canvas.width-(PADDLE_WIDTH)),rightPaddleY,PADDLE_WIDTH,PADDLE_HEIGHT,'white');
 
   //draw ball
   colourCircle(ballX, ballY, 10, 'red');
