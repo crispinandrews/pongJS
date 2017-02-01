@@ -5,6 +5,9 @@ var ballY = 50;
 var ballSpeedX = 10;
 var ballSpeedY = 5;
 
+var player1Score = 0;
+var player2Score = 0;
+
 var leftPaddleY = 250;
 var rightPaddleY = 250;
 const PADDLE_HEIGHT = 100;
@@ -44,8 +47,18 @@ function ballReset(){
   ballSpeedX = -ballSpeedX;
 
 }
+function computerMovement(){
+  var rightPaddleYCenter = rightPaddleY + (PADDLE_HEIGHT/2);
+  if(rightPaddleYCenter < ballY - 35 ){
+    rightPaddleY += 6;
+  } else if (rightPaddleYCenter > ballY + 35 ){
+    rightPaddleY -= 6;
+  }
+}
 
 function move(){
+  computerMovement();
+
   ballX = ballX + ballSpeedX;
   ballY = ballY + ballSpeedY;
 
@@ -55,6 +68,7 @@ function move(){
       ballSpeedX = -ballSpeedX;
     } else{
       ballReset();
+      player2Score++;
     }
   }
   // right side collision
@@ -63,6 +77,7 @@ function move(){
       ballSpeedX = -ballSpeedX;
     } else{
       ballReset();
+      player1Score++;
     }
   }
 
@@ -87,7 +102,11 @@ function drawCanvas(){
   colourRect((canvas.width-(PADDLE_WIDTH)),rightPaddleY,PADDLE_WIDTH,PADDLE_HEIGHT,'white');
 
   //draw ball
-  colourCircle(ballX, ballY, 10, 'red');
+  colourCircle(ballX, ballY, 10, 'white');
+
+  canvasContext.fillText(player1Score, 100, 100);
+  canvasContext.fillText(player2Score, canvas.width-100, 100);
+
 }
 
 function colourCircle(centerX, centerY, radius, drawColour){
